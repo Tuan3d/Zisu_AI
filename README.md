@@ -1,7 +1,7 @@
 # zisu AI - Open Source AI Agent Desktop System
 
 zisu AI là một hệ thống AI Agent siêu nhẹ chạy hoàn toàn dưới máy cục bộ (Local CPU), được thiết kế để điều khiển máy tính thông qua các kỹ năng (Skills) và bộ định tuyến (Router) tự huấn luyện. Dự án giúp tự động hóa các tác vụ máy tính mà không cần gửi dữ liệu lên đám mây hoặc phụ thuộc vào các mô hình ngôn ngữ lớn (LLM) đắt đỏ.
-
+![AI Architecture Diagram](demo.png)
 ---
 
 ## 🚀 Tính năng cốt lõi
