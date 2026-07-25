@@ -1,0 +1,16 @@
+{
+  "name": "zisu_ai",
+  "version": "1.0.0",
+  "description": "zisu AI - Open Source AI Agent Desktop System",
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron app/main.js",
+    "admin": "electron admin/main.js"
+  },
+  "keywords": [],
+  "author": "Open Source Community",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.3.1"
+  }
+}

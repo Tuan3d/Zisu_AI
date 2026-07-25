@@ -1,0 +1,4 @@
+{"text": "mở trình duyệt chrome lên", "expected": {"app_name": "chrome"}}
+{"text": "chạy ứng dụng notepad giùm tôi", "expected": {"app_name": "notepad"}}
+{"text": "mở máy tính calculator", "expected": {"app_name": "calculator"}}
+{"text": "hãy mở cmd lên đi", "expected": {"app_name": "cmd"}}

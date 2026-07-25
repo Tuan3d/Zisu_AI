@@ -1,0 +1,18 @@
+{
+  "id": "open_app",
+  "name": "Mở ứng dụng",
+  "description": "Mở một ứng dụng bất kỳ đã được cài đặt trên hệ thống bằng tên của ứng dụng.",
+  "complexity_level": 1,
+  "risk_level": "LOW",
+  "params": [
+    {
+      "name": "app_name",
+      "type": "string",
+      "description": "Tên của ứng dụng cần mở (ví dụ: chrome, notepad, calculator)",
+      "required": true
+    }
+  ],
+  "fixed_values": {
+    "app_name": ["chrome", "notepad", "calculator", "word", "excel", "powerpoint", "paint", "cmd", "explorer"]
+  }
+}

@@ -1,0 +1,3 @@
+{"text": "tạo file note.txt với nội dung đi mua sữa", "expected": {"file_name": "note.txt", "content": "đi mua sữa"}}
+{"text": "tạo tập tin data.csv chứa hello world", "expected": {"file_name": "data.csv", "content": "hello world"}}
+{"text": "tạo file readme.md", "expected": {"file_name": "readme.md", "content": null}}

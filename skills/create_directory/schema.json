@@ -1,0 +1,21 @@
+{
+  "id": "create_directory",
+  "name": "Tạo thư mục",
+  "description": "Tạo một thư mục mới tại đường dẫn được chỉ định.",
+  "complexity_level": 2,
+  "risk_level": "MEDIUM",
+  "params": [
+    {
+      "name": "dir_name",
+      "type": "string",
+      "description": "Tên thư mục cần tạo",
+      "required": true
+    },
+    {
+      "name": "target_dir",
+      "type": "string",
+      "description": "Thư mục cha chứa thư mục mới này",
+      "required": false
+    }
+  ]
+}

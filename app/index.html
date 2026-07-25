@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>zisu AI Overlay</title>
+  <style>
+    /* Reset & Core Styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 30px;
+    }
+
+    /* Screen Border Glow bám sát mép tuyệt đối */
+    .screen-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      border: 8px solid rgba(13, 110, 253, 0.7);
+      box-shadow: inset 0 0 40px rgba(13, 110, 253, 0.4), 0 0 40px rgba(13, 110, 253, 0.4);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      animation: breathe-glow 4s infinite ease-in-out;
+      z-index: 9999;
+      box-sizing: border-box;
+    }
+
+    @keyframes breathe-glow {
+      0%, 100% {
+        border-color: rgba(13, 110, 253, 0.4);
+        box-shadow: inset 0 0 25px rgba(13, 110, 253, 0.2), 0 0 25px rgba(13, 110, 253, 0.2);
+      }
+      50% {
+        border-color: rgba(13, 110, 253, 0.8);
+        box-shadow: inset 0 0 50px rgba(13, 110, 253, 0.6), 0 0 50px rgba(13, 110, 253, 0.6);
+      }
+    }
+
+    /* Container for Overlay elements */
+    .container {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+
+    /* Input Bar */
+    .input-bar {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid rgba(13, 110, 253, 0.5);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 15px rgba(13, 110, 253, 0.2);
+      transform: translateY(150px);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+      animation: breathe-border 3s infinite ease-in-out;
+      pointer-events: auto; /* Cho phép tương tác chuột tại đây */
+    }
+
+    @keyframes breathe-border {
+      0%, 100% {
+        border-color: rgba(13, 110, 253, 0.4);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 10px rgba(13, 110, 253, 0.1);
+      }
+      50% {
+        border-color: rgba(13, 110, 253, 0.8);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(13, 110, 253, 0.4);
+      }
+    }
+
+    .input-bar input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f8fafc;
+      font-size: 16px;
+    }
+
+    .input-bar input::placeholder {
+      color: #94a3b8;
+    }
+
+    /* Giao diện nút tròn động */
+    .input-bar button {
+      background: #0052cc;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-left: 10px;
+    }
+
+    .input-bar button:hover {
+      transform: scale(1.08);
+      background-color: #0d6efd;
+    }
+
+    .input-bar button.reset-state {
+      background: #ef4444 !important;
+    }
+
+    .input-bar button.reset-state:hover {
+      background: #dc2626 !important;
+    }
+
+    /* Plan Panel (Glassmorphism Vertical Rectangular Panel) */
+    .plan-panel {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      display: none;
+      flex-direction: column;
+      color: #e2e8f0;
+      transform: translateY(-50px);
+      opacity: 0;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      pointer-events: auto; /* Cho phép tương tác chuột tại đây */
+    }
+
+    .plan-header {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #38bdf8;
+      margin-bottom: 15px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 8px;
+    }
+
+    .plan-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 6px;
+      border-left: 3px solid #0d6efd;
+    }
+
+    .step-num {
+      font-weight: bold;
+      color: #0d6efd;
+    }
+
+    .step-details {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .step-params {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .plan-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-execute {
+      background: #0052cc;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-execute:hover {
+      background: #0d6efd;
+    }
+
+    .btn-execute:active {
+      transform: scale(0.98);
+    }
+
+    /* Professional Loading Spinner */
+    .loader {
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #38bdf8;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 10px auto;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Viền sáng màn hình -->
+  <div class="screen-glow" id="screenGlow"></div>
+
+  <div class="container">
+    <!-- Khung Plan kính mờ hiển thị từng bước -->
+    <div class="plan-panel" id="planPanel">
+      <div class="plan-header">Bản phác thảo kế hoạch (Plan)</div>
+      <div class="plan-steps" id="planSteps">
+        <!-- Động chèn các bước ở đây -->
+      </div>
+      <div class="plan-footer">
+        <button class="btn-execute" id="btnExecute">Thực hiện</button>
+      </div>
+    </div>
+
+    <!-- Khung nhập liệu -->
+    <div class="input-bar" id="inputBar">
+      <input type="text" id="userInput" placeholder="Nhập yêu cầu của bạn tại đây (Shift + Z để ẩn)" autofocus />
+      <button id="btnSend">
+        <svg id="btnIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="loader" id="loader"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const screenGlow = document.getElementById('screenGlow');
+    const inputBar = document.getElementById('inputBar');
+    const planPanel = document.getElementById('planPanel');
+    const planSteps = document.getElementById('planSteps');
+    const userInput = document.getElementById('userInput');
+    const btnSend = document.getElementById('btnSend');
+    const btnExecute = document.getElementById('btnExecute');
+    const loader = document.getElementById('loader');
+
+    // Quản lý click-through động của Electron
+    const remote = require('electron').remote;
+    const currentWindow = require('electron').webFrame ? require('electron').ipcRenderer : null;
+
+
+
+    // Bulletproof click-through: ignore mouse on body, capture on interactive elements
+    window.addEventListener('mousemove', (event) => {
+      const isInsideUI = inputBar.contains(event.target) || planPanel.contains(event.target);
+      if (isInsideUI) {
+        ipcRenderer.send('set-ignore-mouse-events', false);
+      } else {
+        ipcRenderer.send('set-ignore-mouse-events', true, { forward: true });
+      }
+    });
+
+    let currentPlan = null;
+    let isResetState = false;
+    let lastQuery = "";
+
+    // Lắng nghe sự kiện bật/tắt overlay từ Main Process
+    ipcRenderer.on('toggle-overlay', (event, state) => {
+      if (state === 'show') {
+        // Reset to clean input state on show
+        userInput.value = '';
+        currentPlan = null;
+        isResetState = false;
+        showSendIcon(true);
+        btnExecute.disabled = false;
+        btnExecute.textContent = 'Thực hiện';
+        btnExecute.style.opacity = '1';
+        planPanel.style.display = 'none';
+        planPanel.style.opacity = '0';
+        planPanel.style.transform = 'translateY(-50px)';
+
+        screenGlow.style.opacity = '1';
+        inputBar.style.opacity = '1';
+        inputBar.style.transform = 'translateY(0)';
+        
+        // Ensure click-through is initially active until hovered
+        ipcRenderer.send('set-ignore-mouse-events', true, { forward: true });
+        
+        setTimeout(() => {
+          userInput.focus();
+        }, 50);
+      } else {
+        screenGlow.style.opacity = '0';
+        inputBar.style.transform = 'translateY(150px)';
+        inputBar.style.opacity = '0';
+        planPanel.style.display = 'none';
+        planPanel.style.opacity = '0';
+        planPanel.style.transform = 'translateY(-50px)';
+        setTimeout(() => {
+          ipcRenderer.send('hide-window');
+        }, 500);
+      }
+    });
+
+    userInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        handleSendOrStop();
+      }
+    });
+
+    btnSend.addEventListener('click', () => {
+      handleSendOrStop();
+    });
+
+    // Monitor input typing to toggle the button style dynamically
+    userInput.addEventListener('input', () => {
+      const text = userInput.value.trim();
+      if (currentPlan && text === lastQuery) {
+        showSendIcon(false); // Show stop icon if query has not changed
+      } else {
+        showSendIcon(true);  // Show send icon if query is edited/new
+      }
+    });
+
+    function handleSendOrStop() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      
+      const isShowingStop = btnSend.classList.contains('reset-state');
+      if (isShowingStop) {
+        // Stop/gray out execute button
+        btnExecute.disabled = true;
+        btnExecute.textContent = 'Đã dừng';
+        btnExecute.style.opacity = '0.5';
+        setResetState(false); // Reset red button back to blue send button
+      } else {
+        // Send new request
+        sendRequest(text);
+      }
+    }
+
+    function sendRequest(text) {
+      lastQuery = text;
+      loader.style.display = 'block';
+      planPanel.style.display = 'none';
+
+      fetch('http://127.0.0.1:5000/api/plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      })
+      .then(res => res.json())
+      .then(plan => {
+        loader.style.display = 'none';
+        currentPlan = plan;
+        renderPlan(plan);
+        setResetState(true);
+      })
+      .catch(err => {
+        loader.style.display = 'none';
+        console.error('Error fetching plan:', err);
+      });
+    }
+
+    function showSendIcon(isSend) {
+      const btnIcon = document.getElementById('btnIcon');
+      if (isSend) {
+        btnSend.classList.remove('reset-state');
+        btnIcon.innerHTML = `
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        `;
+      } else {
+        btnSend.classList.add('reset-state');
+        btnIcon.innerHTML = `
+          <rect x="4" y="4" width="16" height="16" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2.5"></rect>
+        `;
+      }
+    }
+
+    function setResetState(active) {
+      isResetState = active;
+      showSendIcon(!active);
+    }
+
+    function renderPlan(plan) {
+      planSteps.innerHTML = '';
+      if (!plan.steps || plan.steps.length === 0) {
+        planSteps.innerHTML = '<div class="step-item"><div class="step-details">Không phân tích được hành động phù hợp.</div></div>';
+      } else {
+        plan.steps.forEach(step => {
+          const div = document.createElement('div');
+          div.className = 'step-item';
+          div.style.borderLeftColor = step.risk_level === 'HIGH' ? '#ef4444' : (step.risk_level === 'MEDIUM' ? '#f59e0b' : '#0d6efd');
+          
+          let paramsText = "Không có";
+          if (step.params && Object.keys(step.params).length > 0) {
+            paramsText = Object.entries(step.params)
+              .map(([k, v]) => `${k}: ${v === null ? 'null' : v}`)
+              .join(', ');
+          }
+
+          div.innerHTML = `
+            <div class="step-num">${step.step_id}</div>
+            <div class="step-details">
+              <div class="step-title">${step.skill_name} (${step.risk_level})</div>
+              <div class="step-params">Tham số: ${paramsText}</div>
+            </div>
+          `;
+          planSteps.appendChild(div);
+        });
+      }
+      
+      // Reset the execute button state for the new plan
+      btnExecute.disabled = false;
+      btnExecute.textContent = 'Thực hiện';
+      btnExecute.style.opacity = '1';
+
+      planPanel.style.display = 'flex';
+      setTimeout(() => {
+        planPanel.style.opacity = '1';
+        planPanel.style.transform = 'translateY(0)';
+      }, 50);
+    }
+
+    btnExecute.addEventListener('click', () => {
+      if (!currentPlan) return;
+      btnExecute.disabled = true;
+      btnExecute.textContent = 'Đang chạy...';
+
+      fetch('http://127.0.0.1:5000/api/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: currentPlan })
+      })
+      .then(res => res.json())
+      .then(result => {
+        btnExecute.disabled = false;
+        btnExecute.textContent = 'Thực hiện';
+        alert('Thực thi kết quả: ' + result.message);
+      })
+      .catch(err => {
+        btnExecute.disabled = false;
+        btnExecute.textContent = 'Thực hiện';
+        alert('Lỗi thực thi');
+      });
+    });
+  </script>
+</body>
+</html>

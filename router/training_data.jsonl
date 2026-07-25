@@ -1,0 +1,46 @@
+{"text": "mở trình duyệt chrome lên", "skill_id": "open_app"}
+{"text": "chạy ứng dụng notepad giùm tôi", "skill_id": "open_app"}
+{"text": "mở máy tính calculator", "skill_id": "open_app"}
+{"text": "hãy mở cmd lên đi", "skill_id": "open_app"}
+{"text": "bật explorer", "skill_id": "open_app"}
+{"text": "mở word", "skill_id": "open_app"}
+{"text": "bật excel lên", "skill_id": "open_app"}
+{"text": "chạy microsoft edge", "skill_id": "open_app"}
+{"text": "mở chrome", "skill_id": "open_app"}
+{"text": "chạy cmd.exe", "skill_id": "open_app"}
+{"text": "mở ứng dụng photoshop", "skill_id": "open_app"}
+{"text": "bật zalo", "skill_id": "open_app"}
+{"text": "mở telegram", "skill_id": "open_app"}
+{"text": "chạy visual studio code", "skill_id": "open_app"}
+{"text": "mở paint lên", "skill_id": "open_app"}
+{"text": "chạy ứng dụng calculator", "skill_id": "open_app"}
+{"text": "tạo file note.txt với nội dung đi mua sữa", "skill_id": "create_file"}
+{"text": "tạo tập tin data.csv chứa hello world", "skill_id": "create_file"}
+{"text": "tạo file readme.md ở thư mục Document", "skill_id": "create_file"}
+{"text": "tạo file mới trong thư mục work", "skill_id": "create_file"}
+{"text": "hãy viết vào file test.txt nội dung test", "skill_id": "create_file"}
+{"text": "tạo file note.txt", "skill_id": "create_file"}
+{"text": "tạo một tập tin text mới", "skill_id": "create_file"}
+{"text": "ghi vào file log.txt nội dung debug", "skill_id": "create_file"}
+{"text": "tạo file script.py", "skill_id": "create_file"}
+{"text": "tạo tập tin cấu hình config.json", "skill_id": "create_file"}
+{"text": "tạo thư mục project ở D:/work", "skill_id": "create_directory"}
+{"text": "tạo folder source trong thư mục code", "skill_id": "create_directory"}
+{"text": "tạo thư mục mới tại ổ đĩa C", "skill_id": "create_directory"}
+{"text": "tạo folder build", "skill_id": "create_directory"}
+{"text": "hãy tạo thư mục test", "skill_id": "create_directory"}
+{"text": "tạo thư mục docs", "skill_id": "create_directory"}
+{"text": "tạo folder data", "skill_id": "create_directory"}
+{"text": "tạo thư mục mới mang tên workspace", "skill_id": "create_directory"}
+{"text": "hãy tạo folder logs ở ổ D", "skill_id": "create_directory"}
+{"text": "tạo thư mục pictures trong Document", "skill_id": "create_directory"}
+{"text": "xóa file old_data.csv", "skill_id": "delete_file_or_dir"}
+{"text": "xóa thư mục build", "skill_id": "delete_file_or_dir"}
+{"text": "xóa folder test ở D:/work", "skill_id": "delete_file_or_dir"}
+{"text": "hãy xóa tập tin report.pdf", "skill_id": "delete_file_or_dir"}
+{"text": "xóa file nháp đi", "skill_id": "delete_file_or_dir"}
+{"text": "xóa thư mục temp", "skill_id": "delete_file_or_dir"}
+{"text": "xóa file data_old.db", "skill_id": "delete_file_or_dir"}
+{"text": "xóa folder output", "skill_id": "delete_file_or_dir"}
+{"text": "xóa file log.txt", "skill_id": "delete_file_or_dir"}
+{"text": "hãy xóa thư mục build cũ", "skill_id": "delete_file_or_dir"}

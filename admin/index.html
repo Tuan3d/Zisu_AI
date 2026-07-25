@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>zisu AI - Admin Dashboard</title>
+  <style>
+    :root {
+      --bg-primary: #090d16;
+      --bg-secondary: #111827;
+      --bg-card: #1f2937;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 260px;
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--text-main);
+      background-color: var(--bg-card);
+    }
+
+    .nav-btn.active {
+      border-left: 3px solid var(--accent);
+    }
+
+    /* Main Workspace */
+    .workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 30px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .view-panel {
+      display: none;
+    }
+
+    .view-panel.active {
+      display: block;
+    }
+
+    /* Card Layouts */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-weight: bold;
+    }
+
+    .badge-lv1 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .badge-lv2 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+    .badge-lv3 { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+
+    /* Button and Input elements */
+    input, select, textarea {
+      width: 100%;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 6px;
+      outline: none;
+      margin-bottom: 15px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .btn {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-card);
+    }
+
+    /* Logs & Dashboards */
+    .log-box {
+      background-color: var(--bg-secondary);
+      font-family: monospace;
+      padding: 15px;
+      border-radius: 6px;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="brand">zisu AI Admin</div>
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="switchView('skills')">Quản lý Skill</button>
+      <button class="nav-btn" onclick="switchView('train')">Huấn luyện (Train)</button>
+      <button class="nav-btn" onclick="switchView('playground')">Playground</button>
+      <button class="nav-btn" onclick="switchView('feedback')">Feedback & Logs</button>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div class="workspace">
+    
+    <!-- View 1: Quản lý Skill -->
+    <div id="view-skills" class="view-panel active">
+      <div class="section-title">Danh sách Skill</div>
+      <div class="grid" id="skillsGrid"></div>
+      
+      <div class="section-title" style="margin-top: 40px;">Tạo Skill Mới</div>
+      <div class="card" style="max-width: 600px;">
+        <input type="text" id="skillId" placeholder="Skill ID (ví dụ: print_screen)" />
+        <input type="text" id="skillName" placeholder="Tên Skill (ví dụ: Chụp ảnh màn hình)" />
+        <textarea id="skillDesc" placeholder="Mô tả Skill"></textarea>
+        <select id="skillLevel">
+          <option value="1">Cấp độ 1 (Rule thuần / Fuzzy)</option>
+          <option value="2">Cấp độ 2 (Rule + Regex)</option>
+          <option value="3">Cấp độ 3 (Machine Learning Extractor)</option>
+        </select>
+        <button class="btn" onclick="createSkill()">Tạo Skill</button>
+      </div>
+    </div>
+
+    <!-- View 2: Huấn luyện (Train) -->
+    <div id="view-train" class="view-panel">
+      <div class="section-title">Huấn luyện Router & Extractor</div>
+      <div class="card" style="max-width: 600px; margin-bottom: 20px;">
+        <h3 style="margin-bottom: 15px;">Train Router</h3>
+        <p style="color: var(--text-muted); margin-bottom: 15px;">
+          Gộp tất cả training_data từ các Skill và huấn luyện lại bộ định tuyến Router phân loại mệnh đề.
+        </p>
+        <button class="btn" onclick="trainRouter()">Train Router</button>
+      </div>
+      
+      <div class="card" style="max-width: 600px;">
+        <h3 style="margin-bottom: 15px;">Train Extractor</h3>
+        <p style="color: var(--text-muted); margin-bottom: 15px;">
+          Huấn luyện riêng mô hình trích xuất tham số (MLExtractor) cho từng kỹ năng từ test_cases.jsonl.
+        </p>
+        <select id="trainSkillSelect" style="margin-bottom: 15px;">
+          <option value="create_file">Tạo file (create_file)</option>
+          <option value="create_directory">Tạo thư mục (create_directory)</option>
+          <option value="delete_file_or_dir">Xóa file hoặc thư mục (delete_file_or_dir)</option>
+          <option value="open_app">Mở ứng dụng (open_app)</option>
+        </select>
+        <button class="btn" onclick="trainExtractor()">Train Extractor</button>
+      </div>
+      
+      <div class="section-title" style="margin-top: 40px;">Log Kết Quả Huấn Luyện</div>
+      <div class="log-box" id="trainLog">Sẵn sàng huấn luyện...</div>
+    </div>
+
+    <!-- View 3: Playground -->
+    <div id="view-playground" class="view-panel">
+      <div class="section-title">Thử nghiệm NLP / Sandbox Playground</div>
+      <div class="card" style="max-width: 600px; margin-bottom: 20px;">
+        <input type="text" id="testQuery" placeholder="Nhập câu thử nghiệm (ví dụ: mở chrome rồi tạo file test.txt)" style="margin-bottom: 15px;" />
+        <button class="btn" onclick="runPlayground()">Phân tích</button>
+      </div>
+      <div class="section-title">Kết quả phân tích Plan</div>
+      <pre class="log-box" id="playgroundResult" style="max-height: 400px; font-size: 14px;">Chưa có dữ liệu thử nghiệm.</pre>
+    </div>
+
+    <!-- View 4: Feedback & Logs -->
+    <div id="view-feedback" class="view-panel">
+      <div class="section-title">Dashboard phản hồi Like/Dislike</div>
+      <div class="grid" style="margin-bottom: 20px;">
+        <div class="card" style="text-align: center;">
+          <h4 style="color: var(--text-muted);">Tổng Số Phản Hồi</h4>
+          <h1 id="totalFeedback">0</h1>
+        </div>
+        <div class="card" style="text-align: center;">
+          <h4 style="color: var(--text-muted);">Độ Chính Xác Ước Tính</h4>
+          <h1 id="accuracyFeedback">100%</h1>
+        </div>
+      </div>
+      <div class="section-title">Nhật ký phản hồi chi tiết</div>
+      <div id="feedbackList"></div>
+    </div>
+
+  </div>
+
+  <script>
+    function switchView(viewId) {
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById('view-' + viewId).classList.add('active');
+      event.target.classList.add('active');
+
+      if (viewId === 'skills') loadSkills();
+      if (viewId === 'feedback') loadFeedback();
+    }
+
+    function loadSkills() {
+      fetch('http://127.0.0.1:5000/api/admin/skills')
+        .then(res => res.json())
+        .then(skills => {
+          const grid = document.getElementById('skillsGrid');
+          grid.innerHTML = '';
+          skills.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+              <div class="card-title">
+                <span>${s.name}</span>
+                <span class="badge badge-lv${s.complexity_level}">Cấp độ ${s.complexity_level}</span>
+              </div>
+              <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">ID: ${s.id}</div>
+              <p style="font-size: 14px; margin-bottom: 15px;">${s.description}</p>
+              <div style="font-size: 12px; color: var(--accent);">Độ nguy hại: ${s.risk_level}</div>
+            `;
+            grid.appendChild(card);
+          });
+        });
+    }
+
+    function createSkill() {
+      const id = document.getElementById('skillId').value.trim();
+      const name = document.getElementById('skillName').value.trim();
+      const description = document.getElementById('skillDesc').value.trim();
+      const complexity_level = document.getElementById('skillLevel').value;
+
+      if (!id || !name) return alert('Vui lòng điền đủ thông tin');
+
+      fetch('http://127.0.0.1:5000/api/admin/skills', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, name, description, complexity_level })
+      })
+      .then(res => res.json())
+      .then(res => {
+        alert('Tạo Skill thành công');
+        loadSkills();
+      });
+    }
+
+    function trainRouter() {
+      const logBox = document.getElementById('trainLog');
+      logBox.textContent = 'Đang train router...';
+      fetch('http://127.0.0.1:5000/api/admin/train/router', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          logBox.textContent = JSON.stringify(data, null, 2);
+        });
+    }
+
+    function trainExtractor() {
+      const logBox = document.getElementById('trainLog');
+      const skillId = document.getElementById('trainSkillSelect').value;
+      logBox.textContent = 'Đang train extractor cho ' + skillId + '...';
+      fetch('http://127.0.0.1:5000/api/admin/train/extractor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ skill_id: skillId })
+      })
+        .then(res => res.json())
+        .then(data => {
+          logBox.textContent = JSON.stringify(data, null, 2);
+        });
+    }
+
+    function runPlayground() {
+      const text = document.getElementById('testQuery').value.trim();
+      const resultBox = document.getElementById('playgroundResult');
+      if (!text) return;
+
+      fetch('http://127.0.0.1:5000/api/plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      })
+        .then(res => res.json())
+        .then(data => {
+          resultBox.textContent = JSON.stringify(data, null, 2);
+        });
+    }
+
+    function loadFeedback() {
+      fetch('http://127.0.0.1:5000/api/admin/feedback')
+        .then(res => res.json())
+        .then(logs => {
+          document.getElementById('totalFeedback').textContent = logs.length;
+          const dislikes = logs.filter(l => l.reaction === 'dislike').length;
+          const accuracy = logs.length > 0 ? Math.round(((logs.length - dislikes) / logs.length) * 100) : 100;
+          document.getElementById('accuracyFeedback').textContent = accuracy + '%';
+
+          const container = document.getElementById('feedbackList');
+          container.innerHTML = '';
+          logs.forEach(l => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.marginBottom = '10px';
+            card.innerHTML = `
+              <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                <span style="font-weight:bold; color:${l.reaction === 'like' ? 'var(--success)' : 'var(--danger)'}">${l.reaction.toUpperCase()}</span>
+                <span style="color:var(--text-muted); font-size:12px;">${l.timestamp}</span>
+              </div>
+              <div>Skill ID: ${l.skill_id}</div>
+              ${l.reason ? `<div style="color:var(--danger); margin-top:5px;">Lý do: ${l.reason}</div>` : ''}
+            `;
+            container.appendChild(card);
+          });
+        });
+    }
+
+    // Load initial
+    loadSkills();
+  </script>
+</body>
+</html>

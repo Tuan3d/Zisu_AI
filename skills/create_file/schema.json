@@ -1,0 +1,27 @@
+{
+  "id": "create_file",
+  "name": "Tạo file",
+  "description": "Tạo một file mới với tên và thư mục được chỉ định.",
+  "complexity_level": 2,
+  "risk_level": "MEDIUM",
+  "params": [
+    {
+      "name": "file_name",
+      "type": "string",
+      "description": "Tên file cần tạo (ví dụ: note.txt, data.csv)",
+      "required": true
+    },
+    {
+      "name": "target_dir",
+      "type": "string",
+      "description": "Đường dẫn thư mục chứa file",
+      "required": false
+    },
+    {
+      "name": "content",
+      "type": "string",
+      "description": "Nội dung của file",
+      "required": false
+    }
+  ]
+}

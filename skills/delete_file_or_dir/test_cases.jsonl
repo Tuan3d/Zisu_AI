@@ -1,0 +1,2 @@
+{"text": "xóa file old_data.csv", "expected": {"target_path": "old_data.csv", "type": "file"}}
+{"text": "xóa thư mục build", "expected": {"target_path": "build", "type": "directory"}}

@@ -1,0 +1,21 @@
+{
+  "id": "delete_file_or_dir",
+  "name": "Xóa file hoặc thư mục",
+  "description": "Xóa hoàn toàn một tệp tin hoặc thư mục ra khỏi hệ thống.",
+  "complexity_level": 2,
+  "risk_level": "HIGH",
+  "params": [
+    {
+      "name": "target_path",
+      "type": "string",
+      "description": "Đường dẫn hoặc tên của file/thư mục cần xóa",
+      "required": true
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "description": "Xác định kiểu cần xóa: 'file' hoặc 'directory'",
+      "required": false
+    }
+  ]
+}

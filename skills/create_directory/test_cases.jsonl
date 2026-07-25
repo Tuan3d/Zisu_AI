@@ -1,0 +1,2 @@
+{"text": "tạo thư mục project ở D:/work", "expected": {"dir_name": "project", "target_dir": "D:/work"}}
+{"text": "tạo folder source", "expected": {"dir_name": "source", "target_dir": null}}

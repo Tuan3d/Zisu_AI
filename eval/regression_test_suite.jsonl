@@ -1,0 +1,3 @@
+{"text": "mở chrome rồi sau đó tạo file test.txt ở Document chứa nội dung xin chào", "expected_steps": [{"skill_id": "open_app", "params": {"app_name": "chrome"}}, {"skill_id": "create_file", "params": {"file_name": "test.txt", "target_dir": "Document", "content": "xin chào"}}]}
+{"text": "tạo thư mục project ở D:/work rồi mở ứng dụng notepad", "expected_steps": [{"skill_id": "create_directory", "params": {"dir_name": "project", "target_dir": "D:/work"}}, {"skill_id": "open_app", "params": {"app_name": "notepad"}}]}
+{"text": "tạo file readme.md và xóa thư mục build", "expected_steps": [{"skill_id": "create_file", "params": {"file_name": "readme.md"}}, {"skill_id": "delete_file_or_dir", "params": {"target_path": "build", "type": "directory"}}]}
