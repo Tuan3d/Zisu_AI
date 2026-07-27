@@ -18,7 +18,7 @@ Hệ thống hiện tại hỗ trợ 4 kỹ năng cơ bản được phân loạ
 
 Hệ thống hoạt động theo mô hình xử lý ngôn ngữ tự nhiên (NLP) lai ghép (Hybrid NLP Pipeline) trực quan hóa dưới đây:
 
-![AI Architecture Diagram](ai_architecture_diagram.png)
+![AI Architecture Diagram]()
 
 ### Chi tiết luồng xử lý:
 
@@ -37,10 +37,10 @@ Hệ thống hoạt động theo mô hình xử lý ngôn ngữ tự nhiên (NLP
    - Hệ thống tổng hợp các mệnh đề và tham số thành một bản kế hoạch thực thi tuần tự (**Execution Plan**).
    - **Local Executor** sẽ tuần tự gọi API hệ điều hành để hoàn thành các tác vụ và ghi nhận phản hồi (Feedback) của người dùng để cải thiện độ chính xác cho các lần chạy sau.
 
-### Tóm tắt bằng cách dễ hiểu nhất:
+### Tóm tắt dễ hiểu nhất:
 **Nguyên lý hoạt động:**
-Train một model đóng vai trò router, có nhiệm vụ phân tích câu hỏi của người dùng và xác định nên gọi skill nào phù hợp.
-Sau khi router chọn được skill, bản thân skill đó cũng được xây dựng thông qua training hoặc một thuật toán riêng để thực hiện tác vụ cụ thể.
+- Train một model đóng vai trò router, có nhiệm vụ phân tích câu hỏi của người dùng và xác định nên gọi skill nào phù hợp.
+- Sau khi router chọn được skill, bản thân skill đó cũng được xây dựng thông qua training hoặc một thuật toán riêng để thực hiện tác vụ cụ thể.
 ---
 
 ## 💻 Hướng dẫn Cài đặt & Chạy thử nghiệm
@@ -104,5 +104,4 @@ Dự án cần chạy song song cả Python Server (xử lý AI) và Client App 
 * `/app`: Mã nguồn giao diện chính Electron (Overlay client).
 * `/admin`: Mã nguồn giao diện quản trị Admin Dashboard.
 
-## 📄 Giấy phép (License)
-Dự án này được phân phối dưới giấy phép **MIT**. Xem chi tiết tại tệp [LICENSE](LICENSE) hoặc [CONTRIBUTING.md](CONTRIBUTING.md).
+## 📄 Giấy phép (**MIT**)
