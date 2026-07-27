@@ -18,7 +18,7 @@ Hệ thống hiện tại hỗ trợ 4 kỹ năng cơ bản được phân loạ
 
 Hệ thống hoạt động theo mô hình xử lý ngôn ngữ tự nhiên (NLP) lai ghép (Hybrid NLP Pipeline) trực quan hóa dưới đây:
 
-![AI Architecture Diagram]()
+![AI Architecture Diagram](nguyenli.png)
 
 ### Chi tiết luồng xử lý:
 
