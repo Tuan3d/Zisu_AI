@@ -37,6 +37,10 @@ Hệ thống hoạt động theo mô hình xử lý ngôn ngữ tự nhiên (NLP
    - Hệ thống tổng hợp các mệnh đề và tham số thành một bản kế hoạch thực thi tuần tự (**Execution Plan**).
    - **Local Executor** sẽ tuần tự gọi API hệ điều hành để hoàn thành các tác vụ và ghi nhận phản hồi (Feedback) của người dùng để cải thiện độ chính xác cho các lần chạy sau.
 
+### Tóm tắt bằng cách dễ hiểu nhất:
+**Nguyên lý hoạt động:**
+Train một model đóng vai trò router, có nhiệm vụ phân tích câu hỏi của người dùng và xác định nên gọi skill nào phù hợp.
+Sau khi router chọn được skill, bản thân skill đó cũng được xây dựng thông qua training hoặc một thuật toán riêng để thực hiện tác vụ cụ thể.
 ---
 
 ## 💻 Hướng dẫn Cài đặt & Chạy thử nghiệm
